@@ -1,33 +1,106 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-
-export interface UserData {
-  email: string,
-  password: string,
-  full_name?: string
-}
+import { BehaviorSubject, throwError } from 'rxjs';
+import { catchError, tap } from "rxjs/operators";
+import { AuthRequestData, AuthResponseData, User } from 'src/model/Model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
+  userSubject = new BehaviorSubject<User>(null);
+  private tokenExpirationTimer: any;
   constructor(private http: HttpClient) { }
 
-  registerAccount(request: UserData) {
-    return this.http.post(environment.apiUrl + 'user.json', {
-        email: request.email,
-        password: request.password,
-        full_name: request.full_name,
-    });
-  }
+  signup(authRequestData: AuthRequestData){
+    return this.http.post<AuthResponseData>
+    (environment.authUrl + 'signUp' + environment.apiKey, 
+    {
+        email:authRequestData.email,
+        password: authRequestData.password,
+        returnSecureToken: authRequestData.returnSecureToken 
+    }
+    ).
+    pipe(
+        catchError(this.handleError), 
+        tap( resData => {
+            this.handleAuthentication(resData.email, resData.localId
+                , resData.idToken, +resData.expiresIn)
+        })
+    )
+    ;
+}
 
-  login(request: UserData) {
-    return this.http.get(environment.apiUrl + 'user.json');
-  }
+login(authRequestData: AuthRequestData){
+    return this.http.post<AuthResponseData>
+    (environment.authUrl + 'signInWithPassword' + environment.apiKey, 
+        {
+            email:authRequestData.email,
+            password: authRequestData.password,
+            returnSecureToken: authRequestData.returnSecureToken 
+        }
+    ).pipe(
+        catchError(this.handleError), 
+        tap( resData => {
+            this.handleAuthentication(resData.email, resData.localId
+                , resData.idToken, +resData.expiresIn)
+        })
+    );
+}
 
-  checkEmail() {
-
+logout(){
+  // this.userSubject.next(null);
+  // this.router.navigate(["/auth"]);
+  localStorage.removeItem('userData')
+  if(this.tokenExpirationTimer){
+      clearTimeout(this.tokenExpirationTimer)
   }
+  this.tokenExpirationTimer = null;
+}
+
+autoLogout(expirationDuration: number){
+  this.tokenExpirationTimer = 
+  setTimeout(() => {
+      this.logout();
+  }, expirationDuration);
+}
+
+private handleError(errorRes: HttpErrorResponse){
+  let errorMsg = 'An unknow error occured!'
+  if(!errorRes.error || !errorRes.error.error){
+      return throwError(errorMsg);
+  }
+  switch (errorRes.error.error.message){
+      case 'EMAIL_EXISTS':
+          errorMsg = 'This email exists already';
+          break;
+      case 'OPERATION_NOT_ALLOWED':
+          errorMsg = 'Password sign-in is disabled for this project';
+          break;
+      case 'TOO_MANY_ATTEMPTS_TRY_LATER':
+          errorMsg = 'We have blocked all requests from this device due to unusual activity. Try again later';
+          break;
+      case 'EMAIL_NOT_FOUND':
+          errorMsg = 'There is no user record corresponding to this identifier. The user may have been deleted';
+          break;
+      case 'INVALID_PASSWORD':
+          errorMsg = 'The password is invalid or the user does not have a password';
+          break;
+      case 'USER_DISABLED':
+          errorMsg = 'The user account has been disabled by an administrator';
+          break;
+      default:
+          break;
+  }
+  return throwError(errorMsg);
+}
+
+private handleAuthentication(email: string, localId: string, token: string, expiresIn: number){
+  const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+  const user = new User(email, localId, token, expirationDate);
+  // this.userSubject.next(user);
+  // this.autoLogout(expiresIn * 1000);
+  localStorage.setItem('userData', JSON.stringify(user));
+}
 }
