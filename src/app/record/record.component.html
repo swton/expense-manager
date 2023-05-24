@@ -1,0 +1,56 @@
+<app-maintab></app-maintab>
+
+<p>List Income</p>
+<table  class="table" border="1">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID.</th>
+            <th scope="col">Category</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Description</th>
+            <th scope="col">Income Date</th>
+            <th scope="col">delete data</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let income of listIncome">
+            <tr>
+                <td scope="row">{{income.id}}</td>
+                <td>{{income.category}}</td>
+                <td>{{income.amount}}</td>
+                <td>{{income.desc}}</td>
+                <td>{{income.incomeDate}}</td>
+                <td><button>x</button></td>
+            </tr>
+        </ng-container>
+    </tbody>
+</table>
+<p>Total Income : {{totalIncome}}</p>
+
+<hr>
+<p>List Expense</p>
+<table  class="table" border="1">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID.</th>
+            <th scope="col">Category</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Description</th>
+            <th scope="col">Expense Date</th>
+            <th scope="col">delete data</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let expense of listExpense">
+            <tr>
+                <td scope="row">{{expense.id}}</td>
+                <td>{{expense.category}}</td>
+                <td>{{expense.amount}}</td>
+                <td>{{expense.desc}}</td>
+                <td>{{expense.incomeDate}}</td>
+                <td><button>x</button></td>
+            </tr>
+        </ng-container>
+    </tbody>
+</table>
+<p>Total Expense : {{totalExpense}}</p>
