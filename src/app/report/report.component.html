@@ -1,1 +1,60 @@
-report nih
+<app-maintab></app-maintab> 
+<table>
+<tr><td>From </td><td>: <input type="date" name="fromDate" id="fromDate" [(ngModel)]="fromDate"></td></tr> 
+<tr><td>To </td><td>: <input type="date" name="toDate" id="toDate" [(ngModel)]="toDate"></td></tr>
+<tr><td colspan="2"><button class="btn btn-primary" (click)="filterData()">Filter</button></td></tr>
+</table>
+<hr>
+<div style="background-color:#DDFFBB">
+<h1>List Income</h1>
+<ng-container *ngFor="let trx of listIncome">
+<h4>{{trx.category}}</h4>
+<table  class="table" border="1">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID.</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Description</th>
+            <th scope="col">Transaction Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let data of trx.expense">
+            <tr>
+                <td scope="row">{{data.id}}</td>
+                <td>{{data.amount}}</td>
+                <td>{{data.desc}}</td>
+                <td>{{data.trxDate}}</td>
+            </tr>
+        </ng-container>
+    </tbody>
+</table>
+</ng-container>
+</div>
+<hr>
+<div style="background-color:#FFB4B4">
+<h1>List Expense</h1>
+<ng-container *ngFor="let trx of listExpense">
+<h4>{{trx.category}}</h4>
+<table  class="table" border="1">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID.</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Description</th>
+            <th scope="col">Transaction Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let data of trx.expense">
+            <tr>
+                <td scope="row">{{data.id}}</td>
+                <td>{{data.amount}}</td>
+                <td>{{data.desc}}</td>
+                <td>{{data.trxDate}}</td>
+            </tr>
+        </ng-container>
+    </tbody>
+</table>
+</ng-container>
+</div>

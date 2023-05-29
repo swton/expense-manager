@@ -10,13 +10,18 @@ import { AboutComponent } from './about/about.component';
 import { ReportComponent } from './report/report.component';
 import { MaintabComponent } from './maintab/maintab.component';
 import { RouterModule, Routes } from '@angular/router';
+import { EditRecordComponent } from './record/edit-record/edit-record.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 
 const appRoutes : Routes = [
   {path:'',component : HomeComponent},
   {path:'home',component : HomeComponent},
   {path:'record',component : RecordComponent},
+  {path:'record/add',component : EditRecordComponent},
   {path:'history',component : HistoryComponent},
+  {path:'report',component : ReportComponent},
   {path:'about',component : AboutComponent}
 ];
 
@@ -28,12 +33,15 @@ const appRoutes : Routes = [
     HistoryComponent,
     AboutComponent,
     ReportComponent,
-    MaintabComponent
+    MaintabComponent,
+    EditRecordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

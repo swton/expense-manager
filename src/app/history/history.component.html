@@ -1,10 +1,11 @@
 <app-maintab></app-maintab> 
-
-<p>List of Transaction</p>
 <table>
-<tr><td>From </td><td>: <input type="date" name="" id=""></td></tr> 
-<tr><td>To </td><td>: <input type="date" name="" id=""></td></tr>
+<tr><td>From </td><td>: <input type="date" name="fromDate" id="fromDate" [(ngModel)]="fromDate"></td></tr> 
+<tr><td>To </td><td>: <input type="date" name="toDate" id="toDate" [(ngModel)]="toDate"></td></tr>
+<tr><td colspan="2"><button class="btn btn-primary" (click)="filterData()">Filter</button></td></tr>
 </table>
+<hr>
+<h2>List of Transaction</h2>
 <table  class="table" border="1">
     <thead class="thead-dark">
         <tr>
@@ -17,12 +18,12 @@
     </thead>
     <tbody>
         <ng-container *ngFor="let trx of listTransaction">
-            <tr>
+            <tr [ngStyle]="{'background-color': (trx.expenseType=='expense') ? '#FFB4B4' : '#DDFFBB'}">
                 <td scope="row">{{trx.id}}</td>
                 <td>{{trx.category}}</td>
                 <td>{{trx.amount}}</td>
                 <td>{{trx.desc}}</td>
-                <td>{{trx.incomeDate}}</td>
+                <td>{{trx.trxDate}}</td>
             </tr>
         </ng-container>
     </tbody>
