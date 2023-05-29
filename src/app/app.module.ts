@@ -3,31 +3,28 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthenticationComponent } from './authentication/authentication.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
+import { AlertComponent } from 'src/shared/alert/alert.component';
+import { HeaderComponent } from 'src/shared/header/header.component';
 import { RecordComponent } from './record/record.component';
 import { HistoryComponent } from './history/history.component';
 import { AboutComponent } from './about/about.component';
 import { ReportComponent } from './report/report.component';
-import { MaintabComponent } from './maintab/maintab.component';
-import { RouterModule, Routes } from '@angular/router';
+import { MaintabComponent } from '../shared/maintab/maintab.component';
 import { EditRecordComponent } from './record/edit-record/edit-record.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-
-
-const appRoutes : Routes = [
-  {path:'',component : HomeComponent},
-  {path:'home',component : HomeComponent},
-  {path:'record',component : RecordComponent},
-  {path:'record/add',component : EditRecordComponent},
-  {path:'history',component : HistoryComponent},
-  {path:'report',component : ReportComponent},
-  {path:'about',component : AboutComponent}
-];
+import { AuthInterceptorService } from 'src/services/auth-interceptor.service';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AuthenticationComponent,
+    HomeComponent,
+    AlertComponent,
+    HeaderComponent,
     HomeComponent,
     RecordComponent,
     HistoryComponent,
@@ -39,11 +36,18 @@ const appRoutes : Routes = [
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot(appRoutes),
+    ReactiveFormsModule,
+    HttpClientModule,
     HttpClientModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

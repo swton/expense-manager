@@ -6,7 +6,7 @@
             <div class=" navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" aria-current="page" routerLink="/">Home</a>
+                  <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" aria-current="page" routerLink="/home">Home</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" routerLinkActive="active" routerLink="/record">Record</a>
@@ -21,6 +21,12 @@
                   <a class="nav-link" routerLinkActive="active" [routerLink]="['/about']">About Us</a>
                 </li> 
               </ul>
+            </div>
+            <div>
+              <h6 class="text-white">Hi, {{email}} </h6>
+            </div>
+            <div class="m-2" (click)="onClickLogout()">
+              <h6><i class="bi bi-box-arrow-right text-white"></i></h6>
             </div>
           </div>
         </nav>

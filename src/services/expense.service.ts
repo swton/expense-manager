@@ -1,10 +1,13 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Expense } from './expense.model';
+import { Expense } from '../model/expense.model';
 import { map, catchError, tap } from 'rxjs/operators'
-import { Subject, throwError } from 'rxjs';
+import { BehaviorSubject, Subject, throwError } from 'rxjs';
 import { isDeepStrictEqual } from 'util';
 import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
+import { environment } from 'src/environments/environment';
+import { AuthService } from './auth.service';
+import { User } from 'src/model/Model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,18 +17,14 @@ export class ExpenseService {
   private listIncome = [];
   private listData:Expense[];
 
-  constructor(private http:HttpClient) { }
- 
-    endPointURL: string = 'https://db-expense-manager-default-rtdb.asia-southeast1.firebasedatabase.app/';
+  constructor(private http:HttpClient, private authService: AuthService) { }
+    userSubject = new BehaviorSubject<User>(null); 
+    endPointURL: string = environment.apiUrl;
     postURL: string = this.endPointURL+'expense.json';
 
     createAndPost(expenseData: Expense) {
-      console.log(expenseData.amount);
-        this.http.post<{[name : string]:Expense}>(this.postURL, expenseData).subscribe(
-            (data) => {
-              console.log(data);
-            }
-          )
+      expenseData.createdBy = this.authService.userSubject.getValue().id;
+      return this.http.post<{[name : string]:Expense}>(this.postURL, expenseData);
     }
 
     getListCategory(userId:string,categoryType:string){
@@ -35,8 +34,8 @@ export class ExpenseService {
     }
     
 
-    fetchPosts(expenseType:string,userId:string) {
-        return this.http.get<{[key: string]: Expense}>(this.postURL).
+    fetchPosts(expenseType:string) {
+        return this.http.get<{[key: string]: Expense}>(this.postURL, {params: new HttpParams().set('auth', 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjJkM2E0YTllYjY0OTk0YzUxM2YyYzhlMGMwMTY1MzEzN2U5NTg3Y2EiLCJ0eXAiOiJKV1QifQ')}).
         pipe(
           map(
             responseData => {
@@ -48,7 +47,7 @@ export class ExpenseService {
               }
               let returnList:Expense[] = [];
               for(var data of postArray){
-                if(data.expenseType===expenseType && data.createdBy===userId && data.isDeleted===0){
+                if(data.expenseType===expenseType && data.createdBy===this.authService.userSubject.getValue().id && data.isDeleted===0){
                   returnList.push(data);
                 }
               }
@@ -80,7 +79,7 @@ export class ExpenseService {
     }
 
     
-    fetchAll(userId:string) {
+    fetchAll() {
       return this.http.get<{[key: string]: Expense}>(this.postURL).
       pipe(
         map(
@@ -93,7 +92,7 @@ export class ExpenseService {
             }
             let returnList:Expense[] = [];
             for(var data of postArray){
-              if(data.createdBy===userId && data.isDeleted===0){
+              if(data.createdBy===this.authService.userSubject.getValue().id && data.isDeleted===0){
                 returnList.push(data);
               }
             }
@@ -104,7 +103,8 @@ export class ExpenseService {
   }
 
   
-  fetchReport(userId:string,expenseType:string) {
+  fetchReport(expenseType:string) {
+    let userId = this.authService.userSubject.getValue().id;
     return this.http.get<{[key: string]: Expense}>(this.postURL).
     pipe(
       map(

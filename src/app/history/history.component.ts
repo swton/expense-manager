@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Expense } from '../expense.model';
-import { ExpenseService } from '../expense.service';
+import { Expense } from '../../model/expense.model';
+import { ExpenseService } from '../../services/expense.service';
 
 @Component({
   selector: 'app-history',
@@ -21,8 +21,7 @@ export class HistoryComponent implements OnInit {
 
   
   onFetchData(){
-    this.userId='swt';//hardcode userid
-    this.expenseService.fetchAll(this.userId).subscribe(
+    this.expenseService.fetchAll().subscribe(
       data =>{
         this.listTransaction = data;
       }

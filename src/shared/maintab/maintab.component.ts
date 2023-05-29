@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/services/auth.service';
 
 @Component({
   selector: 'app-maintab',
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./maintab.component.css']
 })
 export class MaintabComponent implements OnInit {
-
-  constructor() { }
+  email: string = '';
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.email = this.authService.userSubject.getValue().email;
+  }
+
+  onClickLogout() {
+    this.authService.logout();
   }
 
 }

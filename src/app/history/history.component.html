@@ -6,10 +6,11 @@
 </table>
 <hr>
 <h2>List of Transaction</h2>
-<table  class="table" border="1">
+<table  class="table table-stripped table-borderless">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">ID.</th>
+            <th scope="col" hidden>ID.</th>
+            <th scope="col">No</th>
             <th scope="col">Category</th>
             <th scope="col">Amount</th>
             <th scope="col">Description</th>
@@ -17,13 +18,14 @@
         </tr>
     </thead>
     <tbody>
-        <ng-container *ngFor="let trx of listTransaction">
+        <ng-container *ngFor="let trx of listTransaction; let i = index">
             <tr [ngStyle]="{'background-color': (trx.expenseType=='expense') ? '#FFB4B4' : '#DDFFBB'}">
-                <td scope="row">{{trx.id}}</td>
+                <td scope="row" hidden>{{trx.id}}</td>
+                <td scope="row">{{i+1}}</td>
                 <td>{{trx.category}}</td>
-                <td>{{trx.amount}}</td>
+                <td>{{trx.amount | currency:'IDR'}}</td>
                 <td>{{trx.desc}}</td>
-                <td>{{trx.trxDate}}</td>
+                <td>{{trx.trxDate | date}}</td>
             </tr>
         </ng-container>
     </tbody>

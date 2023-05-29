@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Expense } from '../expense.model';
-import { ExpenseService } from '../expense.service';
+import { Expense } from '../../model/expense.model';
+import { ExpenseService } from '../../services/expense.service';
 
 @Component({
   selector: 'app-report',
@@ -12,7 +12,6 @@ export class ReportComponent implements OnInit {
   listIncome:{category:string,expense:Expense[]}[]=[];
   fromDate:Date = new Date();
   toDate:Date = new Date();
-  userId:string;
   constructor(private expenseService:ExpenseService) { }
 
   ngOnInit(): void {
@@ -20,13 +19,12 @@ export class ReportComponent implements OnInit {
   }
 
   onFetchData(){
-    this.userId='swt';//hardcode userid
-    this.expenseService.fetchReport(this.userId,'expense').subscribe(
+    this.expenseService.fetchReport('expense').subscribe(
       data =>{
         this.listExpense = data;
       }
     );
-    this.expenseService.fetchReport(this.userId,'income').subscribe(
+    this.expenseService.fetchReport('income').subscribe(
       data =>{
         this.listIncome = data;
       }

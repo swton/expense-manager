@@ -1,8 +1,8 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Expense } from 'src/app/expense.model';
-import { ExpenseService } from 'src/app/expense.service';
+import { Expense } from 'src/model/expense.model';
+import { ExpenseService } from 'src/services/expense.service';
 
 @Component({
   selector: 'app-edit-record',
@@ -26,10 +26,15 @@ export class EditRecordComponent implements OnInit {
 
   onSubmit(expenseForm :Expense){
     expenseForm.expenseType = this.expenseType;
-    expenseForm.createdBy = 'swt';//hardcode userId
     expenseForm.isDeleted = 0;
-    this.expenseService.createAndPost(expenseForm);
-    this.router.navigate(['record']);
+    this.expenseService.createAndPost(expenseForm).subscribe((response) => {
+      // response data
+    }, (error) => {
+      // Kondisi Error
+    }, () => {
+      // setelah berhasil add data baru redirect ke record list
+      this.router.navigate(['record']);
+    });
   }
   
   back(){

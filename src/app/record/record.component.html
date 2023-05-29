@@ -1,63 +1,68 @@
 <app-maintab></app-maintab>
 
-<div style="background-color:#DDFFBB">
+<div>
 <h3>List Income</h3>
-<table  class="table" border="1">
-    <thead class="thead-dark">
+<table  class="table table-stripped table-borderless table-hover">
+    <thead class="thead">
         <tr>
-            <th scope="col">ID.</th>
+            <th scope="col" hidden>ID.</th>
+            <th scope="col">No</th>
             <th scope="col">Category</th>
             <th scope="col">Amount</th>
             <th scope="col">Description</th>
             <th scope="col">Income Date</th>
-            <th scope="col">delete data</th>
+            <th scope="col">Action</th>
         </tr>
     </thead>
     <tbody>
-        <ng-container *ngFor="let income of listIncome">
+        <ng-container *ngFor="let income of listIncome; let i = index">
             <tr>
-                <td scope="row">{{income.id}}</td>
+                <td scope="row" hidden>{{income.id}}</td>
+                <th scope="row">{{i + 1}}</th>
                 <td>{{income.category}}</td>
-                <td>{{income.amount}}</td>
+                <td>{{income.amount | currency:'IDR'}}</td>
                 <td>{{income.desc}}</td>
                 <td>{{income.trxDate  | date}}</td>
-                <td><button class="btn btn-danger" (click)="deleteData(income)">X</button></td>
+                <td><button class="btn btn-danger" (click)="deleteData(income)"><i class="bi bi-trash-fill"></i></button></td>
             </tr>
         </ng-container>
     </tbody>
 </table>
-<h6>Total Income : {{totalIncome}}</h6>
+<h6>Total Income : {{totalIncome | currency:'IDR'}}</h6>
 <hr>
-<button (click)="addIncome()" class="btn btn-primary">Add Income</button>
+<button (click)="addIncome()" class="btn btn-primary mb-2">Add Income</button>
 </div>
+<hr>
 
-<div style="background-color:#FFB4B4">
+<div>
 <h3>List Expense</h3>
-<table  class="table" border="1">
-    <thead class="thead-dark">
+<table  class="table table-stripped table-borderless table-hover">
+    <thead class="thead">
         <tr>
-            <th scope="col">ID.</th>
+            <th scope="col" hidden>ID.</th>
+            <th scope="col">No</th>
             <th scope="col">Category</th>
             <th scope="col">Amount</th>
             <th scope="col">Description</th>
             <th scope="col">Expense Date</th>
-            <th scope="col">delete data</th>
+            <th scope="col">Action</th>
         </tr>
     </thead>
     <tbody>
-        <ng-container *ngFor="let expense of listExpense">
+        <ng-container *ngFor="let expense of listExpense; let i = index">
             <tr>
-                <td scope="row">{{expense.id}}</td>
+                <td scope="row" hidden>{{expense.id}}</td>
+                <td scope="row">{{i+1}}</td>
                 <td>{{expense.category}}</td>
-                <td>{{expense.amount}}</td>
+                <td>{{expense.amount | currency:'IDR'}}</td>
                 <td>{{expense.desc}}</td>
                 <td>{{expense.trxDate | date}}</td>
-                <td><button class="btn btn-danger" (click)="deleteData(expense)">X</button></td>
+                <td><button class="btn btn-danger" (click)="deleteData(expense)"><i class="bi bi-trash-fill"></i></button></td>
             </tr>
         </ng-container>
     </tbody>
 </table>
-<h6>Total Income : {{totalExpense}}</h6>
+<h6>Total Income : {{totalExpense | currency:'IDR'}}</h6>
 <hr>
 <button (click)="addExpense()" class="btn btn-primary">Add Expense</button>
 </div>
