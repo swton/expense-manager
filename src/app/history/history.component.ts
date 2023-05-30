@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Expense } from '../../model/expense.model';
 import { ExpenseService } from '../../services/expense.service';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-history',
@@ -19,25 +20,29 @@ export class HistoryComponent implements OnInit {
     this.onFetchData();
   }
 
+  getDatePickerVal(event) {
+    this.fromDate = event.dateFrom;
+    this.toDate = event.dateTo;
+
+    this.onFetchData(true);
+  }
   
-  onFetchData(){
-    this.expenseService.fetchAll().subscribe(
+  onFetchData(isFilterActive: boolean = false) {
+    this.expenseService.fetchAll()
+    .pipe(
+      //Map data if filter active
+      map((val) => {
+        if (isFilterActive) {
+          let filteredDataByDate = val.filter(v => v.trxDate >= this.fromDate && v.trxDate <= this.toDate);
+          return filteredDataByDate;
+        }
+        return val;
+      })
+    )
+    .subscribe(
       data =>{
         this.listTransaction = data;
       }
     );
-  }
-
-  filterData(){
-    this.onFetchData();
-    let tempData = this.listTransaction;
-    let filterList:Expense[]=[];
-    for(var data of tempData){
-      if(data.trxDate > this.fromDate 
-      && data.trxDate < this.toDate ){
-        filterList.push(data);
-      }
-    }
-    this.listTransaction=filterList;
   }
 }

@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthenticationComponent } from './authentication/authentication.component';
@@ -17,6 +16,7 @@ import { EditRecordComponent } from './record/edit-record/edit-record.component'
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AuthInterceptorService } from 'src/services/auth-interceptor.service';
+import { DatepickerComponent } from 'src/shared/datepicker/datepicker.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,8 @@ import { AuthInterceptorService } from 'src/services/auth-interceptor.service';
     AboutComponent,
     ReportComponent,
     MaintabComponent,
-    EditRecordComponent
+    EditRecordComponent,
+    DatepickerComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +40,7 @@ import { AuthInterceptorService } from 'src/services/auth-interceptor.service';
     ReactiveFormsModule,
     HttpClientModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [
     {

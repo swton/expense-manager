@@ -1,10 +1,7 @@
-<app-maintab></app-maintab> 
-<table>
-<tr><td>From </td><td>: <input type="date" name="fromDate" id="fromDate" [(ngModel)]="fromDate"></td></tr> 
-<tr><td>To </td><td>: <input type="date" name="toDate" id="toDate" [(ngModel)]="toDate"></td></tr>
-<tr><td colspan="2"><button class="btn btn-primary" (click)="filterData()">Filter</button></td></tr>
-</table>
-<hr>
+<app-maintab></app-maintab>
+<div>
+    <app-datepicker [title]="'Report'" (datePickerVal)="getDatePickerVal($event)"></app-datepicker>
+</div>
 <div>
 <h3>List Income</h3>
 <ng-container *ngFor="let trx of listIncome">
