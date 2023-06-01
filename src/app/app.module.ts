@@ -17,6 +17,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AuthInterceptorService } from 'src/services/auth-interceptor.service';
 import { DatepickerComponent } from 'src/shared/datepicker/datepicker.component';
+import { FooterComponent } from 'src/shared/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { DatepickerComponent } from 'src/shared/datepicker/datepicker.component'
     ReportComponent,
     MaintabComponent,
     EditRecordComponent,
-    DatepickerComponent
+    DatepickerComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

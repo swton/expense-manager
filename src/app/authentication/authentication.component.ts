@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthRequestData, AuthResponseData } from 'src/model/Model';
+import { AuthRequestData, AuthResponseData, ErrorType } from 'src/model/Model';
 import { AuthService } from 'src/services/auth.service';
 @Component({
   selector: 'app-authentication',
@@ -9,23 +9,28 @@ import { AuthService } from 'src/services/auth.service';
   styleUrls: ['./authentication.component.css']
 })
 export class AuthenticationComponent implements OnInit {
+  showError: boolean = false;
   title: string = 'Login';
+  errType: ErrorType;
+  errMsg: string;
   showLoading: boolean = false;
   showLogin: boolean = true;
   authReq: AuthRequestData = null;
   authResponseData: AuthResponseData = null;
-  registerForm = new FormGroup({
-    email: new FormControl('', Validators.required),
-    password: new FormControl(''),
-  });
-  loginForm = new FormGroup({
-    email: new FormControl(''),
-    password: new FormControl(''),
-  })
+  registerForm: FormGroup;
+  loginForm!: FormGroup;
 
   constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    this.registerForm = new FormGroup({
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      password: new FormControl(null, [Validators.required, Validators.minLength(6)]),
+    });
+    this.loginForm = new FormGroup({
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      password: new FormControl(null, [Validators.required, Validators.minLength(6)]),
+    })
   }
 
   onLogin() {
@@ -38,20 +43,26 @@ export class AuthenticationComponent implements OnInit {
     this.authService.login(this.authReq).subscribe({
       next: (response) => {
       }, error: (err) => {
+        this.errMsg = err;
+        this.errType = ErrorType.DANGER;
         this.showLoading = false;
+        this.showError = true;
       }, complete: () => {
         this.showLoading = false;
+        this.showError = false;
         this.router.navigate(['home']);
       }
     })
   }
 
   goToPage(showLogin: boolean) {
+    this.showError = false;
     showLogin ? this.title = 'Login' : this.title = 'Sign Up';
     return this.showLogin = showLogin;
   }
 
   onRegister() {
+    this.showError = false;
     this.showLoading = true;
     this.authReq = {
       email: this.registerForm.value.email,
@@ -61,10 +72,13 @@ export class AuthenticationComponent implements OnInit {
 
     this.authService.signup(this.authReq).subscribe({
       next: (response) => {
-        console.log(response);
+        this.errMsg = 'Account Successfully Created';
+        this.errType = ErrorType.SUCCESS;
       }, error: (err) => {
-        console.log(err);
+        this.errMsg = err;
+        this.errType = ErrorType.DANGER;
         this.showLoading = false;
+        this.showError = true;
       }, complete: () => {
         this.showLoading = false;
       }

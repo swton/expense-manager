@@ -1,6 +1,6 @@
 <app-maintab></app-maintab>
 
-<div>
+<div class="record-container">
 <h3>List Income</h3>
 <table  class="table table-stripped table-borderless table-hover">
     <thead class="thead">
@@ -15,6 +15,13 @@
         </tr>
     </thead>
     <tbody>
+        <tr *ngIf="listIncome.length < 1">
+            <td colspan="6" class="text-center text-danger">
+                <p class="fw-bold">
+                    No record found
+                </p>
+            </td>
+        </tr>
         <ng-container *ngFor="let income of listIncome; let i = index">
             <tr>
                 <td scope="row" hidden>{{income.id}}</td>
@@ -28,13 +35,13 @@
         </ng-container>
     </tbody>
 </table>
-<h6>Total Income : {{totalIncome | currency:'IDR'}}</h6>
+<h6 *ngIf="!(listIncome.length < 1)">Total Income : {{totalIncome | currency:'IDR'}}</h6>
 <hr>
 <button (click)="addIncome()" class="btn btn-primary mb-2">Add Income</button>
 </div>
 <hr>
 
-<div>
+<div  class="record-container">
 <h3>List Expense</h3>
 <table  class="table table-stripped table-borderless table-hover">
     <thead class="thead">
@@ -49,6 +56,13 @@
         </tr>
     </thead>
     <tbody>
+        <tr *ngIf="listExpense.length < 1">
+            <td colspan="6" class="text-center text-danger">
+                <p class="fw-bold">
+                    No record found
+                </p>
+            </td>
+        </tr>
         <ng-container *ngFor="let expense of listExpense; let i = index">
             <tr>
                 <td scope="row" hidden>{{expense.id}}</td>
@@ -62,7 +76,8 @@
         </ng-container>
     </tbody>
 </table>
-<h6>Total Income : {{totalExpense | currency:'IDR'}}</h6>
+<h6 *ngIf="!(listExpense.length < 1)">Total Income : {{totalExpense | currency:'IDR'}}</h6>
 <hr>
 <button (click)="addExpense()" class="btn btn-primary">Add Expense</button>
+
 </div>

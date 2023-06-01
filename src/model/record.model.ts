@@ -1,4 +1,4 @@
-export interface Recordsa {
+export interface Records {
     id?:string,
     expenseDate:Date,
     category:string,

@@ -40,14 +40,18 @@ export class RecordComponent implements OnInit, AfterViewInit {
 
   onFetchData(){
     this.expenseService.fetchPosts('expense').subscribe(
-      data =>{
+      data => {
         this.listExpense = data;
         this.totalExpense = this.expenseService.getTotalAmount(data);
+      }, (error) => {
+
+      }, () => {
+        
       }
     );
 
     this.expenseService.fetchPosts('income').subscribe(
-      data =>{
+      data => {
         this.listIncome = data;
         this.totalIncome = this.expenseService.getTotalAmount(data);
       }
