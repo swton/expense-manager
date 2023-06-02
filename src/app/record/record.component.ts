@@ -30,12 +30,8 @@ export class RecordComponent implements OnInit, AfterViewInit {
     this.onFetchData();
   }
 
-  addExpense(){
-    this.router.navigate(['add'],{queryParams:{type:'expense'}, relativeTo:this.route});
-  }
-
-  addIncome(){
-    this.router.navigate(['add'],{queryParams:{type:'income'}, relativeTo:this.route});
+  addRecord(type: string){
+    this.router.navigate(['add'],{queryParams:{type: type}, relativeTo:this.route});
   }
 
   onFetchData(){
@@ -61,10 +57,23 @@ export class RecordComponent implements OnInit, AfterViewInit {
   deleteData(data:Expense){
     this.expenseService.deleteData(data).subscribe(
       response => {
-        console.log(response);
         this.onFetchData();
       }
     );
-    
+  }
+
+  editData(data:Expense, type: string){
+    this.router.navigate(['edit'],
+      {
+        state: {
+          data
+        },
+        queryParams:{
+          type: type
+        },
+
+        relativeTo:this.route
+      }
+    );
   }
 }
