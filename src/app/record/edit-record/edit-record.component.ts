@@ -11,8 +11,9 @@ import { ExpenseService } from 'src/services/expense.service';
 })
 export class EditRecordComponent implements OnInit {
   @ViewChild('expenseForm') expenseForm: NgForm;
-  listCategory=[];
+  listCategory;
   expenseType:string;
+  expenseCategory;
   constructor(private expenseService:ExpenseService,private router:Router,private route:ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -21,7 +22,14 @@ export class EditRecordComponent implements OnInit {
         this.expenseType = params.type;
       }
     );
-    this.listCategory= this.expenseService.getListCategory('userId',this.expenseType);
+    this.fetchCategory();
+  }
+
+  fetchCategory(){
+    this.expenseService.getListCategory(this.expenseType).subscribe(
+      data =>{
+        this.listCategory=  data;
+      });
   }
 
   onSubmit(expenseForm :Expense){
@@ -39,5 +47,16 @@ export class EditRecordComponent implements OnInit {
   
   back(){
     this.router.navigate(['record']);
+  }
+
+  addCategory(){
+    this.expenseService.addCategory(this.expenseCategory,this.expenseType).subscribe((response) => {
+      // response data
+    }, (error) => {
+      // Kondisi Error
+    }, () => {
+      // setelah berhasil 
+    });
+    this.fetchCategory();
   }
 }

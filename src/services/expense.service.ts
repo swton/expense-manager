@@ -21,17 +21,49 @@ export class ExpenseService {
     userSubject = new BehaviorSubject<User>(null); 
     endPointURL: string = environment.apiUrl;
     postURL: string = this.endPointURL+'expense.json';
+    postCatURL: string = this.endPointURL+'cat.json';
 
     createAndPost(expenseData: Expense) {
       expenseData.createdBy = this.authService.userSubject.getValue().id;
       return this.http.post<{[name : string]:Expense}>(this.postURL, expenseData);
     }
 
-    getListCategory(userId:string,categoryType:string){
-      //ambil sesuai category expense / income ke DB Category
-      let listCategory=['Jajan','Makan','dll'];
-      return listCategory;
+    addCategory(expenseCategory: string,expenseType:string) {
+      return this.http.post(this.postCatURL, {category:expenseCategory
+        ,createdBy: this.authService.userSubject.getValue().id
+       ,expenseType:expenseType});
     }
+
+    getListCategory(expenseType:string) {
+      return this.http.get(this.postCatURL).
+      pipe(
+        map(
+          responseData => {
+            const postArray: {category:string,createdBy:string,expenseType:string}[] = [];
+            console.log(responseData);
+            for(const key in responseData) {
+              if(responseData.hasOwnProperty(key)) {
+                postArray.push({...responseData[key], id: key})
+              }
+            }
+            let returnList:string[] = [];
+            for(var data of postArray){
+              if(data.createdBy===this.authService.userSubject.getValue().id && data.expenseType===expenseType){
+                returnList.push(data.category);
+              }
+            }
+            console.log(returnList);
+            return returnList;
+          }
+        )
+      )
+  }
+
+    // getListCategory(userId:string,categoryType:string){
+    //   //ambil sesuai category expense / income ke DB Category
+    //   let listCategory=['Jajan','Makan','dll'];
+    //   return listCategory;
+    // }
     
 
     fetchPosts(expenseType:string) {
