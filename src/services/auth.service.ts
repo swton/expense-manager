@@ -98,7 +98,7 @@ private handleError(errorRes: HttpErrorResponse){
   }
   switch (errorRes.error.error.message){
       case 'EMAIL_EXISTS':
-          errorMsg = 'This email exists already';
+          errorMsg = 'This email already exist, please login to continue using this email';
           break;
       case 'OPERATION_NOT_ALLOWED':
           errorMsg = 'Password sign-in is disabled for this project';

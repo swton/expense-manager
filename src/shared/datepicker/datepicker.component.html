@@ -1,0 +1,10 @@
+<form action="">
+    <h3>Filter {{title}} By Date</h3>
+    <span> From : <input type="date" name="fromDate" id="fromDate" [(ngModel)]="fromDate"></span>
+    <span> To : <input type="date" name="toDate" id="toDate" [(ngModel)]="toDate"></span>
+    <div>
+    <button class="btn btn-primary mt-2" (click)="onSubmit()">Filter</button>
+    </div>
+</form>
+
+<hr>

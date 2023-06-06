@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Expense } from '../../model/expense.model';
 import { ExpenseService } from '../../services/expense.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-report',
@@ -18,21 +19,46 @@ export class ReportComponent implements OnInit {
     this.onFetchData();
   }
 
-  onFetchData(){
-    this.expenseService.fetchReport('expense').subscribe(
-      data =>{
+  getDatePickerVal(event) {
+    this.fromDate = event.dateFrom;
+    this.toDate = event.dateTo;
+
+    this.onFetchData(true);
+  }
+
+  onFetchData(isFilterActive: boolean = false){
+    console.log('masuk');
+    
+    this.expenseService.fetchReport('expense')
+    .pipe(
+      map((val) => {
+        // if (isFilterActive) {
+        //   let filteredDataByDate = val.filter(vl => vl.expense.filter(v => v.trxDate >= this.fromDate && v.trxDate <= this.toDate));
+        //   return filteredDataByDate;
+        // }
+        return val;
+      })
+    )
+    .subscribe(
+      (data) =>{
         this.listExpense = data;
       }
     );
-    this.expenseService.fetchReport('income').subscribe(
+
+    this.expenseService.fetchReport('income')
+    .pipe(
+      map((val) => {
+        // if (isFilterActive) {
+        //   let filteredDataByDate = val.filter(vl => vl.expense.filter(v => v.trxDate >= this.fromDate && v.trxDate <= this.toDate));
+        //   return filteredDataByDate;
+        // }
+        return val;
+      })
+    )
+    .subscribe(
       data =>{
         this.listIncome = data;
       }
     );
   }
-
-  filterData(){
-
-  }
-
 }

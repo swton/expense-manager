@@ -28,6 +28,20 @@ export class ExpenseService {
       return this.http.post<{[name : string]:Expense}>(this.postURL, expenseData);
     }
 
+
+    updateData(data: Expense) {
+      const dataUpdate = { [data.id] : {
+        amount: data.amount,
+        category: data.category,
+        createdBy: this.authService.userSubject.getValue().id,
+        desc: data.desc,
+        expenseType: data.expenseType,
+        isDeleted: 0,
+        trxDate: data.trxDate
+    }};
+    return this.http.patch(this.postURL, dataUpdate);
+    }
+
     addCategory(expenseCategory: string,expenseType:string) {
       return this.http.post(this.postCatURL, {category:expenseCategory
         ,createdBy: this.authService.userSubject.getValue().id
@@ -156,7 +170,6 @@ export class ExpenseService {
               listofCategory.push(data.category);
             }
           }
-          console.log(listofCategory);
           const distinctArray = listofCategory.filter((n, i) => listofCategory.indexOf(n) === i);
 
           for(var category of distinctArray){

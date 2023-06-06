@@ -28,3 +28,9 @@ export interface AuthRequestData{
         return this._token;
     }
   }
+
+  export enum ErrorType {
+    SUCCESS,
+    DANGER,
+    WARNING
+  }

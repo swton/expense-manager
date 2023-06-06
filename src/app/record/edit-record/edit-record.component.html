@@ -1,12 +1,12 @@
 <app-maintab></app-maintab>
-<form #expenseForm="ngForm" (ngSubmit)="onSubmit(expenseForm.value)">
+<form [formGroup]="updateAddForm" class="edit-container">
     <div class="form-group">
-      <label for="trxDate">Expense Date</label>
-      <input type="date" class="form-control" id="trxDate" ngModel name="trxDate">
+      <label for="trxDate">{{expenseType | titlecase}} Date</label>
+      <input type="date" class="form-control" id="trxDate" formControlName="trxDate">
     </div>
     <div class="form-group">
       <label for="category">Category</label>
-      <select class="form-select" aria-label="Default select example" ngModel name="category">
+      <select class="form-select" aria-label="Default select example" formControlName="category">
         <option selected value=""></option>
         <option *ngFor="let cbCategory of listCategory" [value]="cbCategory" >
             {{cbCategory}}
@@ -15,14 +15,20 @@
     </div>
     <div class="form-group">
       <label for="amount">Amount</label>
-      <input type="number" class="form-control" id="amount" ngModel name="amount">
+      <input type="number" class="form-control" id="amount" formControlName="amount">
     </div>
     <div class="form-group">
       <label for="desc">Description</label>
-      <input type="text" class="form-control" id="desc"  ngModel name="desc">
+      <input type="text" class="form-control" id="desc" formControlName="desc">
     </div>
-    <button type="submit" class="btn btn-primary" >Save</button>
-    <button type="button" class="btn btn-secondary" (click)="back()">Back</button>
+    <button type="submit" 
+    [disabled]="!updateAddForm.get('amount').valid || !updateAddForm.get('category').valid || !updateAddForm.get('trxDate').valid || !updateAddForm.get('desc').valid" 
+    (click)="onSubmit()" class="btn btn-primary mt-2">
+      <span *ngIf="!isEdit">Save</span>
+      <span *ngIf="isEdit">Update</span>
+    </button>&nbsp;
+    <button type="button" class="btn btn-secondary mt-2" 
+    (click)="back()">Back</button>
 </form>
 <br><br><br><br>
   <div class="form-group">

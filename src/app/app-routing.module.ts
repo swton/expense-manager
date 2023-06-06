@@ -14,6 +14,7 @@ const routes: Routes = [
   {path:'home',component : HomeComponent, canActivate: [AuthGuard]},
   {path:'record',component : RecordComponent, canActivate: [AuthGuard]},
   {path:'record/add',component : EditRecordComponent, canActivate: [AuthGuard]},
+  {path:'record/edit',component : EditRecordComponent, canActivate: [AuthGuard]},
   {path:'history',component : HistoryComponent, canActivate: [AuthGuard]},
   {path:'report',component : ReportComponent, canActivate: [AuthGuard]},
   {path:'about',component : AboutComponent, canActivate: [AuthGuard]}
