@@ -54,7 +54,6 @@ export class ExpenseService {
         map(
           responseData => {
             const postArray: {category:string,createdBy:string,expenseType:string}[] = [];
-            console.log(responseData);
             for(const key in responseData) {
               if(responseData.hasOwnProperty(key)) {
                 postArray.push({...responseData[key], id: key})
@@ -66,7 +65,6 @@ export class ExpenseService {
                 returnList.push(data.category);
               }
             }
-            console.log(returnList);
             return returnList;
           }
         )
