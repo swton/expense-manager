@@ -47,7 +47,7 @@ export class EditRecordComponent implements OnInit {
   fetchCategory(){
     this.expenseService.getListCategory(this.expenseType).subscribe(
       data =>{
-        this.listCategory=  data;
+        this.listCategory=data;
       });
   }
 
@@ -95,13 +95,12 @@ export class EditRecordComponent implements OnInit {
   }
 
   addCategory(){
-    this.expenseService.addCategory(this.expenseCategory,this.expenseType).subscribe((response) => {
-      // response data
+    this.expenseService.addCategory(this.expenseCategory,this.expenseType).subscribe((response) => {   
+      this.fetchCategory();
     }, (error) => {
       // Kondisi Error
     }, () => {
       // setelah berhasil 
     });
-    this.fetchCategory();
   }
 }
