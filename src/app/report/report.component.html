@@ -3,11 +3,38 @@
     <div>
         <app-datepicker [title]="'Report'" (datePickerVal)="getDatePickerVal($event)"></app-datepicker>
     </div>
+    <div class="row">
+        <div class="col">
+            <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                <div class="card-header text-center"><h4>Net Worth</h4></div>
+                <div class="card-body">
+                    <h5 class="card-title text-center">{{netWorth | currency:'IDR'}}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                <div class="card-header text-center"><h4>Total Income</h4></div>
+                <div class="card-body">
+                    <h5 class="card-title text-center">{{totalIncome | currency:'IDR'}}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+                <div class="card-header text-center"><h4>Total Expense</h4></div>
+                <div class="card-body">
+                    <h5 class="card-title text-center">{{totalExpense | currency:'IDR'}}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
     <div>
-    <h3>List Income</h3>
+    <h3 class="bg-success text-white p-2">List Income</h3>
     <ng-container *ngFor="let trx of listIncome">
-    <h4 class="text-success">{{trx.category}}</h4>
-    <table  class="table table-stripped table-borderless">
+    <h4 class="text-success" *ngIf="trx != undefined">{{trx.category}}</h4>
+    <table  class="table table-stripped table-borderless" *ngIf="trx != undefined">
         <thead class="thead-dark">
             <tr>
                 <th scope="col" hidden>ID.</th>
@@ -33,10 +60,10 @@
     </div>
     <hr>
     <div>
-    <h3>List Expense</h3>
+    <h3 class="bg-danger text-white p-2">List Expense</h3>
     <ng-container *ngFor="let trx of listExpense">
-    <h4 class="text-danger">{{trx.category}}</h4>
-    <table  class="table">
+    <h4 class="text-danger" *ngIf="trx != undefined">{{trx.category}}</h4>
+    <table  class="table" *ngIf="trx != undefined">
         <thead class="thead-dark">
             <tr>
                 <th scope="col" hidden>ID.</th>
