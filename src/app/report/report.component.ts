@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Expense } from '../../model/expense.model';
 import { ExpenseService } from '../../services/expense.service';
 import { map } from 'rxjs/operators';
-import { error } from 'console';
 
 @Component({
   selector: 'app-report',

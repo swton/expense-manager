@@ -74,6 +74,7 @@ export class AuthenticationComponent implements OnInit {
       next: (response) => {
         this.errMsg = 'Account Successfully Created';
         this.errType = ErrorType.SUCCESS;
+        this.showError = true;
       }, error: (err) => {
         this.errMsg = err;
         this.errType = ErrorType.DANGER;
